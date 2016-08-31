@@ -1,6 +1,12 @@
--- Rock Paper Scissors game functions
 import Data.Time
 import System.Random
+
+main = do
+  gen <- getStdGen
+--  randomVal <- random RPS
+
+
+-- Rock Paper Scissors game functions
 data RPS = Rock | Paper | Scissors deriving (Eq, Show, Read)
 type Score = (Int, Int)
 
