@@ -1,9 +1,15 @@
 import Data.Time
 import System.Random
 
-main = do
-  gen <- getStdGen
---  randomVal <- random RPS
+--main = do
+--  gen <- getStdGen
+
+-- Get a random play value
+randomVal :: IO RPS
+randomVal = do 
+  num <- randomRIO (0, 2) :: IO Int
+  return ([Rock, Paper, Scissors] !! num)
+  
 
 
 -- Rock Paper Scissors game functions
