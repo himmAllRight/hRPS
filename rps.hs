@@ -1,17 +1,54 @@
 import Data.Time
 import System.Random
 
---main = do
---  gen <- getStdGen
+main = do
+  putStrLn("Welcome to hRPS!")
+  -- Get number of Players
+  players <- playersPromt
+  -- Get number of Rounds
+  rounds <- roundsPrompt
 
--- Get a random play value
+  putStrLn("Selected " ++ players ++ " players and " ++ rounds ++ " rounds.")
+  
+
+
+playerOptions :: [String]
+playerOptions = ["0", "1", "2"]
+
+-- Get Player Count
+playersPromt :: IO String
+playersPromt = do
+  putStrLn "How many players? ['0', '1', or '2']: "
+  players <- getLine
+  if not (players `elem` playerOptions)
+    then do
+        putStrLn("Invalid option entered: " ++ players)
+        playersPromt
+    else return(players)
+
+-- Get Rounds
+roundsPrompt :: IO String
+roundsPrompt = do
+  putStrLn "How many rounds?"
+  putStrLn "a - Best of 3"
+  putStrLn "b - Best of 5"
+  putStrLn "c - Best of 7"
+  putStrLn "# - Best of N (enter a number for N)"
+  putStrLn "0 - Endless (Keep playing till quit)"
+  rounds <- getLine
+  return(rounds)
+ 
+
+-- Get a random play 
 randomVal :: IO RPS
 randomVal = do 
   num <- randomRIO (0, 2) :: IO Int
   return ([Rock, Paper, Scissors] !! num)
-  
 
 
+-----------------------
+-- "Pure" Functions  --
+-----------------------
 -- Rock Paper Scissors game functions
 data RPS = Rock | Paper | Scissors deriving (Eq, Show, Read)
 type Score = (Int, Int)
