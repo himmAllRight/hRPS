@@ -4,20 +4,24 @@ import System.Random
 main = do
   putStrLn("Welcome to hRPS!")
   -- Get number of Rounds
-  rounds <- roundsPrompt
+--  rounds <- roundsPrompt
+  --putStrLn("Selected " ++ rounds ++ " rounds.")
 
-  putStrLn("Selected " ++ rounds ++ " rounds.")
+  final <- playRounds 3 (0,0)
+  return(final)
   
 
 -- Get Rounds
 roundsPrompt :: IO String
 roundsPrompt = do
   putStrLn "How many rounds?"
-  putStrLn "a - Best of 3"
-  putStrLn "b - Best of 5"
-  putStrLn "c - Best of 7"
-  putStrLn "# - Best of N (enter a number for N)"
-  putStrLn "0 - Endless (Keep playing till quit)"
+
+  -- Will add game types in future
+--  putStrLn "a - Best of 3"
+--  putStrLn "b - Best of 5"
+--  putStrLn "c - Best of 7"
+--  putStrLn "# - Best of N (enter a number for N)"
+--  putStrLn "0 - Endless (Keep playing till quit)"
   rounds <- getLine
   return(rounds)
  
@@ -38,14 +42,34 @@ getUserVal = do
   
 
 -- Play Round
---playRound :: Int -> Score -> IO String
--- playRound 0      score = putStrLn "Final Score: " ++ score "."
--- playRound rounds score = do
---   computerMove <- randomVal
---   userMove     <- getUserVal
---   playRound (rounds - 1) play(userMove computerMove score)
-testRound 0      score = score
-testRound rounds score = testRound((rounds - 1), play(Rock Paper score))
+--playRounds :: Int -> Score -> IO Score
+playRounds 0 score = do
+  let finalScoreStr = "Final Score: Player= " ++ show(fst score) ++ " Computer= " ++ show(snd score) in putStrLn finalScoreStr
+  return(score)
+playRounds n score = do
+  let round = fst(score) + snd(score) + 1
+  let roundString = "Round " ++ show(round) ++ ":" in putStrLn roundString
+  newScore <- playRound score
+  -- Print new Score
+  let scoreString = "New Score: " ++ show(newScore) ++ "\n" in  putStrLn scoreString
+  let newN = if (fst newScore) + (snd newScore) + 1 > round then n - 1 else n
+  -- Final Score
+  finalScore <- playRounds newN newScore
+  return(finalScore)
+
+playRound score = do
+  -- Get Move Values
+  playerMove <- getUserVal
+  aiMove <- randomVal
+
+  -- Print out move results
+  let moveSelectionString = "\nPlayer Selected: " ++ show(playerMove) ++ "   Computer Selected: " ++ show(aiMove)
+  putStrLn moveSelectionString
+
+  -- Calculate Score
+  let newScore = play playerMove aiMove score
+
+  return(newScore)
 
 -----------------------
 -- "Pure" Functions  --
