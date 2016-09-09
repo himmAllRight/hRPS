@@ -3,28 +3,11 @@ import System.Random
 
 main = do
   putStrLn("Welcome to hRPS!")
-  -- Get number of Players
-  players <- playersPromt
   -- Get number of Rounds
   rounds <- roundsPrompt
 
-  putStrLn("Selected " ++ players ++ " players and " ++ rounds ++ " rounds.")
+  putStrLn("Selected " ++ rounds ++ " rounds.")
   
-
-
-playerOptions :: [String]
-playerOptions = ["0", "1", "2"]
-
--- Get Player Count
-playersPromt :: IO String
-playersPromt = do
-  putStrLn "How many players? ['0', '1', or '2']: "
-  players <- getLine
-  if not (players `elem` playerOptions)
-    then do
-        putStrLn("Invalid option entered: " ++ players)
-        playersPromt
-    else return(players)
 
 -- Get Rounds
 roundsPrompt :: IO String
@@ -39,12 +22,30 @@ roundsPrompt = do
   return(rounds)
  
 
--- Get a random play 
+-- Generate a random play 
 randomVal :: IO RPS
 randomVal = do 
   num <- randomRIO (0, 2) :: IO Int
   return ([Rock, Paper, Scissors] !! num)
 
+-- Get User Round
+getUserVal :: IO RPS
+getUserVal = do
+  putStrLn "Select Play: 0] Rock   1] Paper   2] Scissors"
+  cmd <- getLine
+  let num = (read cmd)
+  return ([Rock, Paper, Scissors] !! num)
+  
+
+-- Play Round
+--playRound :: Int -> Score -> IO String
+-- playRound 0      score = putStrLn "Final Score: " ++ score "."
+-- playRound rounds score = do
+--   computerMove <- randomVal
+--   userMove     <- getUserVal
+--   playRound (rounds - 1) play(userMove computerMove score)
+testRound 0      score = score
+testRound rounds score = testRound((rounds - 1), play(Rock Paper score))
 
 -----------------------
 -- "Pure" Functions  --
