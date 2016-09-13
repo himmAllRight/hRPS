@@ -38,7 +38,7 @@ getUserVal = do
   putStrLn "Select Play: 0] Rock   1] Paper   2] Scissors"
   cmd <- getLine
   let num = (read cmd)
-  return ([Rock, Paper, Scissors] !! num)
+  if (num >= 0) && (num < 3) then return ([Rock, Paper, Scissors] !! num) else getUserVal
   
 
 -- Play Round
@@ -56,6 +56,15 @@ playRounds n score = do
   -- Final Score
   finalScore <- playRounds newN newScore
   return(finalScore)
+
+-- bestOfGame :: Int -> Score -> IO Score
+-- bestOfGame n score = do
+--   let gameDone = bestOfDone n score
+--   if gameDone then
+--       let finalScoreStr = "Final Score: Player= " ++ show(fst score) ++ " Computer= " ++ show(snd score) in putStrLn finalScoreStr
+--       return(score)
+--   else score
+
 
 playRound score = do
   -- Get Move Values
@@ -98,6 +107,15 @@ multiPlay [] (sa,sb) = (sa,sb)
 multiPlay (x:xs) (sa,sb) = multiPlay xs (play (fst x) (snd x) (sa,sb))
 
 -- Helper Functions
+-- Return if best of N is finished
+bestOfDone :: Int -> Score -> Bool
+bestOfDone n score
+  | n `mod` 2 == 0           = error "Best of number provided to bestOfDone (n) must be odd."
+  | fst score >= scoreToBeat = True
+  | snd score >= scoreToBeat = True
+  | otherwise                = False
+  where scoreToBeat =  n `div` 2 + 1
+
 num2RPS :: Int -> RPS
 num2RPS x = rpsReturn
     where
