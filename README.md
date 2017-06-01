@@ -9,6 +9,8 @@ cabal update
 cabal install random
 ```
 
+*NOTE*: I am having issues with installing the System.Random library I use. Will update then.
+
 # Compile the Code
 
 # Playing a Basic Round
